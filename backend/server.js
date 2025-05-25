@@ -3,10 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const socketIO = require('socket.io');
 const http = require('http');
-const port = process.env.port || 8000;
+const connectDB = require('./config/mongo_db_config');
+const user_auth_routes = require('./routes/user_auth_routes');
+
 
 const app = express();
 const server = http.createServer(app);
+
+connectDB();
 
 const io = socketIO(server,{
     cors:{
@@ -20,11 +24,15 @@ const io = socketIO(server,{
 app.use(cors());
 app.use(express.json());
 
+//routes
+
+app.use('/api/auth', user_auth_routes)
+
 app.get('/',(req,res)=>{
     res.send('hello world');
 });
 
 
-server.listen(port,(req,res) =>{
-    console.log(`server is running : ${port}`)
+server.listen(process.env.port,(req,res) =>{
+    console.log(`server is running : ${process.env.port}`)
 });
