@@ -1,13 +1,18 @@
-import { View, Text, ImageBackground, Pressable, SafeAreaView, TextInput, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Text, ImageBackground, Pressable, SafeAreaView, TextInput, TouchableOpacity, StatusBar, Alert } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { images } from '@/constants';
 import { router } from 'expo-router';
+import { sendOTP, verifyOTP } from '../lib/services/auth';
+import { useAuth } from '../lib/context/auth_context';
 
-const login = () => {
-  
-  const [otp, setOtp] = useState(['2', '2', '0', '7']);
+const otpScreen = () => {
+
+  const [otp, setOtp] = useState(Array(6).fill(''));
+  const [loading, setLoading] = useState(false);
+  const [resendDisabled, setResendDisabled] = useState(true);
   const [timeLeft, setTimeLeft] = useState(30);
-  const inputRefs = useRef([]);
+  const { phoneNumber, login } = useAuth();
+  const inputRefs = useRef<Array<TextInput | null>>([]);
 
   // Timer countdown effect
   useEffect(() => {
@@ -27,19 +32,13 @@ const login = () => {
 
   // Handle OTP input change
   const handleOtpChange = (value: string, index: number) => {
-    if (value.length > 1) {
-      // If pasting multiple digits, use only the first one
-      value = value.charAt(0);
-    }
-    
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-    
-    // Auto-advance to next input
-    if (value && index < 3) {
-      inputRefs.current[index + 1];
-    }
+  const newOtp = [...otp];
+  newOtp[index] = value.slice(-1);
+  setOtp(newOtp);
+
+  if (value && index < 5) {
+    inputRefs.current[index + 1]
+  }
   };
 
   // Handle key press for backspace navigation
@@ -49,21 +48,39 @@ const login = () => {
     }
   };
 
-  // Handle continue button press
-  const handleContinue = () => {
-    const otpValue = otp.join('');
-    console.log('OTP Submitted:', otpValue);
-    // Add navigation or verification logic here
-  };
+const handleVerifyOTP = async () => {
+  const otpCode = otp.join('');
+  if (otpCode.length !== 6) {
+    Alert.alert('Error', 'Please enter a valid 6-digit OTP');
+    return;
+  }
 
-  // Handle resend OTP
-  const handleResend = () => {
-    if (timeLeft === 0) {
-      console.log('Resending OTP...');
+  try {
+    setLoading(true);
+    const response = await verifyOTP(phoneNumber, otpCode);
+    await login(response.user);
+    router.push('../(root)/(tabs)/home');
+  } catch (error) {
+    Alert.alert('Error', 'Failed to verify OTP');
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const handleResendOTP = async () => {
+    try {
+      setLoading(true);
+      await sendOTP(phoneNumber);
+      setResendDisabled(true);
       setTimeLeft(30);
-      // Add your resend logic here
+      Alert.alert('Success', 'OTP resent successfully');
+    } catch (error) {
+      Alert.alert('Error','Failed to resend OTP');
+    } finally {
+      setLoading(false);
     }
   };
+  
   return (
     <ImageBackground source={images.background} className="flex-1" resizeMode="cover">
 
@@ -92,10 +109,9 @@ const login = () => {
 
         {/* OTP Input */}
         <View className="flex-row justify-between mb-8">
-          {[0, 1, 2, 3].map((index) => (
+          {[0, 1, 2, 3, 4, 5].map((index) => (
             <TextInput
-              key={index}
-              // ref={(ref) => (inputRefs.current[index] = ref)}
+              key={index}ref={(ref) => {inputRefs.current[index] = ref;}}
               className="w-16 h-16 border border-gray-300 rounded-lg text-center text-xl bg-white"
               maxLength={1}
               keyboardType="number-pad"
@@ -106,17 +122,17 @@ const login = () => {
           ))}
         </View>
 
-        {/* Continue Button */}
+        {/* Verify Otp Button */}
         <TouchableOpacity 
-          onPress={handleContinue}
+          onPress={handleVerifyOTP}
           className="bg-orange-500 rounded-lg py-4 items-center mb-6"
         >
-          <Text className="text-white font-medium text-center">Continue</Text>
+          <Text className="text-white font-medium text-center">Verify</Text>
         </TouchableOpacity>
 
         {/* Resend OTP */}
         <View className="items-center">
-          <Pressable onPress={handleResend}>
+          <Pressable onPress={handleResendOTP}>
             <Text className="text-gray-600 text-center">
               Didn't receive OTP? 
               <Text className={`font-medium ${timeLeft === 0 ? 'text-orange-500' : 'text-gray-600'}`}>
@@ -132,4 +148,4 @@ const login = () => {
   );
 }
 
-export default login
+export default otpScreen;

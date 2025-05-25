@@ -1,0 +1,20 @@
+{
+  "name": "neighborhood-watch-portal",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "backend"
+  ],
+  "scripts": {
+    "start:police": "yarn workspace policeapp start",
+    "start:user": "yarn workspace userapp start", 
+    "start:backend": "yarn workspace backend start",
+    "start:backend:dev": "yarn workspace backend dev",
+    "install:all": "yarn install",
+    "android:police": "yarn workspace policeapp android",
+    "ios:police": "yarn workspace policeapp ios"
+  },
+  "devDependencies": {
+    "@expo/cli": "latest"
+  }
+}

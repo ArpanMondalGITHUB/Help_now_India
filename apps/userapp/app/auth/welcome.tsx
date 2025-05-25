@@ -2,7 +2,7 @@ import { View, Text, Image, StatusBar, ImageBackground } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { icons, images } from "@/constants";
-import CustomButton from "@/components/customButton";
+import CustomButton from "@/app/components/customButton";
 import { router } from "expo-router";
 
 const welcome = () => {
@@ -71,7 +71,7 @@ const welcome = () => {
           {/* third button */}
           <View className=" flex-col justify-center items-center p-10">
             <CustomButton
-              onPress={() => router.navigate('./signup')}
+              onPress={() => router.navigate('./phoneScreen')}
               title="Continue With Phone"
               IconLeft={() => (
                 <Image
