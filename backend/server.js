@@ -5,8 +5,8 @@ const socketIO = require('socket.io');
 const http = require('http');
 const connectDB = require('./config/mongo_db_config');
 const user_auth_routes = require('./routes/user_auth_routes');
-const socketHandler = require('./sockets').default;
-
+const socketHandler = require('./sockets');
+const adminroutes = require('./routes/admin_routes')
 const app = express();
 const server = http.createServer(app);
 
@@ -27,7 +27,7 @@ app.use(cors());
 app.use(express.json());
 
 //routes
-
+app.use('/api/admin',adminroutes);
 app.use('/api/auth', user_auth_routes)
 
 app.get('/',(req,res)=>{
