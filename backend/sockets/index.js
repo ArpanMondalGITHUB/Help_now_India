@@ -5,4 +5,6 @@ function socketConnection(io) {
     });
 };
 
-export default socketConnection;
+
+
+module.exports = socketConnection;
