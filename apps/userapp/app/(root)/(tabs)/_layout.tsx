@@ -1,16 +1,59 @@
-import { View, Text } from 'react-native'
+import { View, Image, ImageSourcePropType } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
-
+import { icons } from '@/constants'
+import { BlurView } from 'expo-blur'
 const _layout = () => {
+  const TabIcon = ({source,focused}:{source:ImageSourcePropType,focused:boolean}) =>  (
+    <View className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-primary" : ""}`}>
+      <View className={`rounded-full w-10 h-10 items-center justify-center ${focused ? "bg-general-400" : ""}`}>
+        <Image source={source} tintColor="white" resizeMode='contain' className='w-7 h-7'/>
+      </View>
+    </View>
+  )
   return (
-    <Tabs screenOptions={{headerShown:false,}}>
-      <Tabs.Screen name='home' options={{title:"Home",headerShown:false,}}/>
-      <Tabs.Screen name='history' options={{title:"history",headerShown:false,}}/>
-      <Tabs.Screen name='map' options={{title:"map",headerShown:false,}}/>
-      <Tabs.Screen name='profile' options={{title:"profile",headerShown:false,}}/>
+    <Tabs
+    screenOptions={{
+      tabBarActiveTintColor:'white',
+       headerShown:false
+      ,tabBarInactiveTintColor:'white',
+      tabBarShowLabel:false,
+      tabBarStyle:{
+        backgroundColor:"trsnparent",
+        borderRadius:50,
+        paddingBottom:20,
+        overflow:"hidden",
+        marginHorizontal:20,
+        marginBottom:20,
+        height:78,
+        display:"flex",
+        justifyContent:"space-between",
+        alignItems:"center",
+        flexDirection:"row",
+        position:"absolute"
+      },
+      tabBarBackground: () => (
+          <BlurView
+            intensity={0}
+            tint="dark" // or "dark"
+            style={{
+              flex: 1,
+              borderRadius: 50,
+            }}
+          />
+        )
+    }}>
+      <Tabs.Screen name='home' options={{title:'Home', headerShown:false ,
+         tabBarIcon: ({focused}) => <TabIcon focused={focused} source={icons.home}/>}}/>
+      <Tabs.Screen name='map' options={{title:'map', headerShown:false ,
+         tabBarIcon: ({focused}) => <TabIcon focused={focused} source={icons.map}/>}}/>
+      <Tabs.Screen name='history' options={{title:'history', headerShown:false ,
+         tabBarIcon: ({focused}) => <TabIcon focused={focused} source={icons.list}/>}}/>
+      <Tabs.Screen name='profile' options={{title:'Profile', headerShown:false ,
+         tabBarIcon: ({focused}) => <TabIcon focused={focused} source={icons.profile}/>}}/>
     </Tabs>
   )
+
 }
 
 export default _layout

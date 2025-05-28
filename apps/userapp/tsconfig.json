@@ -12,5 +12,5 @@
     "**/*.ts",
     "**/*.tsx",
     "nativewind-env.d.ts"
-, "app/lib/context/auth_context.js"  ]
+, "app/lib/context/auth_context.js", "app/lib/services/api.js"  ]
 }
