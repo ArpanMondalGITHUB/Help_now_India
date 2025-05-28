@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 const connectDB = require('./config/mongo_db_config');
 const user_auth_routes = require('./routes/user_auth_routes');
-
+const socketHandler = require('./sockets').default;
 
 const app = express();
 const server = http.createServer(app);
@@ -19,6 +19,8 @@ const io = socketIO(server,{
         credentials: true
     }
 });
+
+socketHandler(io);
 
 // Middleware
 app.use(cors());
