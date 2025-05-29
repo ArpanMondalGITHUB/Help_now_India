@@ -11,9 +11,8 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
     "nativewind.d.ts",
-    "nativewind-env.d.ts"
-  ]
+    "nativewind-env.d.ts",
+    "app/lib/services/api.js"
+, "app/lib/services/police_auth.js", "app/lib/context/police_auth_context.js"  ]
 }

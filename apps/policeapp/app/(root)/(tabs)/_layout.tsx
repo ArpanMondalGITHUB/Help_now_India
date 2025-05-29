@@ -43,7 +43,7 @@ const _layout = () => {
           />
         )
     }}>
-      <Tabs.Screen name='history_screen' options={{title:'history_screen', headerShown:false ,
+      <Tabs.Screen name='home_screen' options={{title:'home_screen', headerShown:false ,
          tabBarIcon: ({focused}) => <TabIcon focused={focused} source={policeicons.policehome}/>}}/>
       <Tabs.Screen name='map_screen' options={{title:'map_screen', headerShown:false ,
          tabBarIcon: ({focused}) => <TabIcon focused={focused} source={policeicons.policemap}/>}}/>

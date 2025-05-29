@@ -1,6 +1,8 @@
 import { policeicons } from '@/constants';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
+import Login from '../lib/services/police_auth';
+import { useAuth } from '../lib/context/police_auth_context';
 import { 
   View, 
   Text, 
@@ -13,7 +15,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Alert
 } from 'react-native';
 
 const login_screen = () => {
@@ -22,9 +25,25 @@ const login_screen = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    router.push('../(root)/(tabs)/history_screen');
-    console.log('Login pressed', { email, password });
+  const { login } = useAuth(); 
+
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        Alert.alert('Error', 'Please enter both email and password.');
+        return;
+      }
+
+      setLoading(true);
+      const userData = await Login(email, password); 
+      await login(userData); 
+      router.replace('/(root)/(tabs)/home_screen');
+    } catch (error) {
+      console.error("Login error:", error);
+      Alert.alert('Error', 'Failed to login. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const dismissKeyboard = () => {

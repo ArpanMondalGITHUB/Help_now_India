@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "start:police": "yarn workspace policeapp start",
-    "start:user": "yarn workspace userapp start", 
+    "start:user": "yarn workspace userapp start",
     "start:backend": "yarn workspace backend start",
     "start:backend:dev": "yarn workspace backend dev",
     "install:all": "yarn install",
