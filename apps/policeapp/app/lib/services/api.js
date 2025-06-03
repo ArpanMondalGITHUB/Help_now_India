@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
 
-const baseURL = "http://192.168.172.243:8000";
+const baseURL = Constants.expoConfig.extra.API_URL;
 
 const policeApiClient = axios.create({
     baseURL,  
