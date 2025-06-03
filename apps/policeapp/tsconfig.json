@@ -14,5 +14,5 @@
     "nativewind.d.ts",
     "nativewind-env.d.ts",
     "app/lib/services/api.js"
-, "app/lib/services/police_auth.js", "app/lib/context/police_auth_context.js"  ]
+, "app/lib/services/police_auth.js", "app/lib/context/police_auth_context.js", "app/components/alert_card.tsx"  ]
 }

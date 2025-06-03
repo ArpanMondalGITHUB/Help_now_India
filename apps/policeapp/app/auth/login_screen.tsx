@@ -35,8 +35,10 @@ const login_screen = () => {
       }
 
       setLoading(true);
+      console.log('loading');
       const userData = await Login(email, password); 
-      await login(userData); 
+      console.log('Logged in user:', userData);
+      login(userData); 
       router.replace('/(root)/(tabs)/home_screen');
     } catch (error) {
       console.error("Login error:", error);
