@@ -10,7 +10,6 @@ module.exports = (socket, io) => {
     console.log('onlineOfficers:', onlineOfficers, 'type:', typeof onlineOfficers, 'isMap:', onlineOfficers instanceof Map);
     onlineOfficers.forEach((officer,officerId) => {
       const officerLocation = { latitude: officer.latitude, longitude: officer.longitude };
-      console.log('Calculating distance between:', userLocation, officerLocation);
       const dist = calculateDistance(userLocation, officerLocation);
       if (dist < minDistance) {
         minDistance = dist;
@@ -19,8 +18,6 @@ module.exports = (socket, io) => {
     });
 
     if (nearestOfficer) {
-      console.log(`Sending alert to officer ${nearestOfficer.officerId}:`, nearestOfficer.socketId);
-
       // Send alert to that officer
       io.to(nearestOfficer.socketId).emit('receive_alert', {
         userLocation,

@@ -24,8 +24,6 @@ const home_screen = () => {
       setLoading(true);
       console.log('loading');
       await sendLocationToBackend()
-      console.log('sendingloation to backend from home screen')
-
     } catch (error: any) {
     console.error('Full error:', error);
     const message = error?.message || 'Something went wrong';
