@@ -10,15 +10,12 @@ export const useHelpRequest = () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       console.log('asking permisssion');
       if (status !== 'granted') {
-        console.log('permission denied');
         throw new Error('Permission to access location was denied.from service code');
       }
 
       const location = await Location.getCurrentPositionAsync({});
-      console.log('Current position from service code :', location);
 
       if (!user?._id) {
-        console.log('user id is missing');
         throw new Error('User ID is missing');
       }
 
@@ -35,7 +32,6 @@ export const useHelpRequest = () => {
       };
 
       socket.emit('send_help', payload);
-      console.log('Help request emitted to backend:', payload);
     } catch (error) {
       console.error('Help request error:', error);
       throw error;

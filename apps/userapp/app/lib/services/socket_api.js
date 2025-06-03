@@ -1,7 +1,7 @@
 import {io} from "socket.io-client";
 import Constants from 'expo-constants';
 
-const socketUrl = "http://192.168.172.243:8000";
+const socketUrl = Constants.expoConfig.extra.API_URL;
 
 const socket = io(socketUrl,{
     transports:['websocket'],
