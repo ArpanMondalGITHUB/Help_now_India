@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (userData) => {
     try {
+      console.log('Login userData:', userData);
       setUser(userData);
       await AsyncStorage.setItem('user', JSON.stringify(userData));
     } catch (error) {

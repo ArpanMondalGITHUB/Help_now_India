@@ -8,8 +8,9 @@ export const useHelpRequest = () => {
   const sendHelpRequestAndGetCurrentPosition = async (): Promise<void> => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-
+      console.log('asking permisssion');
       if (status !== 'granted') {
+        console.log('permission denied');
         throw new Error('Permission to access location was denied.from service code');
       }
 
@@ -17,14 +18,17 @@ export const useHelpRequest = () => {
       console.log('Current position from service code :', location);
 
       if (!user?._id) {
+        console.log('user id is missing');
         throw new Error('User ID is missing');
       }
 
       if (!socket.connected) {
+        console.log('socket not connected')
         throw new Error('Socket not connected');
       }
 
       const payload = {
+        phonenumber:user.phonenumber,
         userid: user._id,
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -40,3 +44,5 @@ export const useHelpRequest = () => {
 
   return { sendHelpRequestAndGetCurrentPosition };
 };
+
+export default useHelpRequest;

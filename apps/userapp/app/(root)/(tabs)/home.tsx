@@ -1,12 +1,14 @@
 import { View, Text, StatusBar, ScrollView, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import QuickActionButton from '@/app/components/quickactionButton';
 import EmergencyButton from '@/app/components/emergencyButton';
 import  {useHelpRequest}  from '../../lib/services/socket_send_help'
+import socket from '@/app/lib/services/socket_api';
 
 const home = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [alerts, setAlerts] = useState([]);
   const { sendHelpRequestAndGetCurrentPosition } = useHelpRequest();
 
   const handleSendHelpandCurrentPosition = async () => {
@@ -14,8 +16,7 @@ const home = () => {
     setLoading(true);
     console.log('loading');
     await sendHelpRequestAndGetCurrentPosition();
-    console.log('sendinghelprequest from home screen')
-    Alert.alert('Help request sent successfully!from home screen');
+    Alert.alert('Help request sent successfully!');
     } catch (error: any) {
     console.error('Full error:', error);
     const message = error?.message || 'Something went wrong';
@@ -25,6 +26,17 @@ const home = () => {
     setLoading(false);
     }
   };
+
+  //   useEffect(() => {
+  //   socket.on("help_request_sent", ({data}:{data:any}) => {
+  //     console.log("help_request_sent recived:", data);
+  //     setAlerts((prev) => [...prev, data] as any);
+  //   });
+
+  //   return () => {
+  //     socket.off("receive_alert");
+  //   };
+  // }, []);
   
   return (
     <View className="flex-1 bg-slate-50">

@@ -61,18 +61,14 @@ exports.verifyOtp = async(req,res) =>{
 
         if (verification.status === 'approved') {
 
-            await User.findOneAndUpdate(
+            const user = await User.findOneAndUpdate(
                 { phonenumber: newphonenumber },  
-                { isverified: true }              
+                { isverified: true },
+                { new: true }            
             );
-
-
             res.status(200).json({
                 message: 'OTP verified successfully',
-                user: {
-                    phoneNumber: newphonenumber,  
-                    isVerified: true
-                }
+                user
             });
         } else {
             res.status(400).json({ message: 'Invalid or expired OTP from backend' });
